@@ -1,3 +1,4 @@
 # keep bot token and servers private
 .env
 __pycache__
+count.txt
