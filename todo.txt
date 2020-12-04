@@ -1,0 +1,5 @@
+Add approval system
+Add fancy embeds
+Make functional for multiple servers?
+Add shadow realm functionality
+?????
