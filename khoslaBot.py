@@ -20,7 +20,7 @@ SQLITEFILE = os.getenv('SQLITE_FILE')
 @c.bot.event
 async def on_ready():
     print(f'{c.bot.user.name} has connected to Discord!')
-    db.init()
+    db.init(SQLITEFILE)
 
     guild = discord.utils.get(c.bot.guilds, name=GUILD)
     print(
