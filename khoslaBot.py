@@ -30,4 +30,9 @@ async def on_ready():
     async for guild in c.bot.fetch_guilds(limit=150):
         print(guild.name)
 
+
+@c.bot.command(name='ping', help='Test')  # is bot alive
+async def on_message(ctx):
+    await ctx.channel.send('Pong!')
+
 c.bot.run(TOKEN)
