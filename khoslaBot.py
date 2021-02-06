@@ -27,5 +27,12 @@ async def on_ready():
         f'{c.bot.user} is connected to the following guild:\n'
         f'{guild.name}(id: {guild.id})'
     )
+    async for guild in c.bot.fetch_guilds(limit=150):
+        print(guild.name)
+
+
+@c.bot.command(name='ping', help='Test')  # is bot alive
+async def on_message(ctx):
+    await ctx.channel.send('Pong!')
 
 c.bot.run(TOKEN)

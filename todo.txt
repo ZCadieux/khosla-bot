@@ -1,5 +1,6 @@
-Add approval system
-Add fancy embeds
+Add confession approval system
+Add fancy embeds for confessions
 Make functional for multiple servers?
 Add shadow realm functionality
+Raccoon Fest functionality (pokecord type scavenger hunt stuff)
 ?????
