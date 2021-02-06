@@ -13,34 +13,45 @@ def sql_connect(file):
     except Error as e:
         print(f"Error '{e}' occurred when connecting to database.sql")
 
-def init(file):
-    sql_connect(file)
-    c.execute("CREATE TABLE IF NOT EXISTS users ("
-        "id INTEGER AUTOINCREMENT"
-        "user_hash TEXT PRIMARY KEY,"
-        "counter INTEGER"
-    ")")
-
-    c.execute("CREATE TABLE IF NOT EXISTS confessions ("
-        "id INTEGER PRIMARY KEY,"
-        "author INTEGER,"
-        "submission TEXT,"
-        "verify_id INTEGER,"
-        "submission_id INTEGER,"
-        "approved INTEGER,"
-        "FOREIGN KEY(author) REFERENCES users(id)"
-    ")")
-
+def run(*x):
+    c.execute(*x)
     connection.commit()
 
-def confess(user, confession):
-    # TODO - form messages/embeds, add to db, add user if necessary and send them their user id, and send to #confessions-queue
-    print("confession: ", user, confession)
+def init(file):
+    sql_connect(file)
 
-def approve(admin_id):
-    # TODO - set approved to 1, send message in #confessions, send confirmation in #confessions-queue
-    print("approving: ", admin_id)
+    run("CREATE TABLE IF NOT EXISTS confessions ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "submission TEXT NOT NULL,"
+        "verify_id INTEGER NOT NULL,"
+        "submission_id INTEGER,"
+        "approved INTEGER DEFAULT 0"
+    ")")
 
-def deny(admin_id):
+def confess(confession):
+    # TODO - Send message in #confessions-queue
+
+    # TODO - Set this to the message ID after it's sent into the #confessions-queue
+    msgid = 1; 
+
+    run("INSERT INTO confessions (submission, verify_id)"
+        "VALUES (?,?)", [confession, msgid])
+
+
+def approve(msg_id):
+    # TODO - Send confirmation in #confessions-queue and send confession in #confessions
+
+    run("UPDATE confessions"
+        "SET approved = 1"
+        "WHERE verify_id=?"
+        "LIMIT 1", [msg_id])
+    print("approving: ", msg_id)
+
+def deny(msg_id):
     # TODO - set apporved to 2, send confirmation in #confessions-queue
+
+    run("UPDATE confessions"
+        "SET approved = 2"
+        "WHERE verify_id=?"
+        "LIMIT 1", [msg_id])
     print("denying: ", admin_id)
