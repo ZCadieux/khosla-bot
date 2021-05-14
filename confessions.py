@@ -32,7 +32,7 @@ async def on_message(ctx):
         # confessionApproval = c.bot.get_channel(784308011656675358)
         # await confessionApproval.send(confession)
         # if successfully confessed,since confess returns the message id
-        queued = db.confess(confession)
+        queued = db.confess(ctx)
         if queued is not None:
             confText = f'Confession Number {retrieveConfNum()} submitted!'
             await ctx.channel.send(confText)
@@ -44,7 +44,7 @@ async def on_message(ctx):
 async def on_raw_reaction_add(payload):
     if db.isQueuedConfession(payload.message_id) is not True:
         return
-    if payload.event_type != 'REACTION_ADD' and payload.user_id != 784307745918025739:  # don't trigger on own react
+    if payload.event_type != 'REACTION_ADD' and payload.user_id != c.botUserID:  # don't trigger on own react
         if payload.emoji == 'thumbsup':
             db.approve(payload.message_id)
         if payload.emoji == 'thumbsdown':
